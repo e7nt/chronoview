@@ -1,0 +1,21 @@
+---
+title: Quickstart Example
+---
+
+@ 2026-04-01 "Kickoff"
+@ 2026-06-01 "Demo Day"
+
+## Planning
+
+- [done] Define scope | 2026-03-15 -> 2026-03-25 | #6366F1
+  actual: 2026-03-15 -> 2026-03-22
+
+- [in-progress] Stakeholder interviews | 2026-03-20 -> 2026-04-10 | #6366F1
+
+## Build
+
+- [todo] Prototype | 2026-04-01 -> 2026-04-30 | #EC4899
+  depends: Define scope
+
+- [todo] Polish | 2026-05-01 -> 2026-05-25 | #EC4899
+  depends: Prototype

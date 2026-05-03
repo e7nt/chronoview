@@ -1,0 +1,70 @@
+---
+title: Project Phoenix
+---
+
+# Milestones
+@ 2026-03-15 "Alpha Release"
+@ 2026-05-01 "Beta Release"
+@ 2026-06-30 "v1.0 GA"
+
+# Announcements
+! 2026-04-10 "Scheduled DB migration — 4hr window"
+! 2026-05-20 "Public launch announcement"
+
+## Backend
+
+- [done] API scaffolding | 2026-01-15 -> 2026-02-01 | #6366F1
+  actual: 2026-01-15 -> 2026-01-28
+  note: "Shipped 3 days early"
+
+- [done] Database schema v1 | 2026-01-20 -> 2026-02-10 | #6366F1
+  actual: 2026-01-20 -> 2026-02-14
+  note: "Took longer due to indexing review"
+
+- [in-progress] Auth service | 2026-02-01 -> 2026-03-15 | #6366F1
+  actual: 2026-02-05 -> 2026-03-22
+  depends: API scaffolding
+
+- [todo] Rate limiting | 2026-03-15 -> 2026-04-05 | #6366F1
+  depends: Auth service
+
+- [blocked] Payment integration | 2026-03-01 -> 2026-04-15 | #EF4444
+  blocked-by: "Awaiting Stripe contract approval"
+
+## Frontend
+
+- [done] Design system | 2026-01-10 -> 2026-02-05 | #EC4899
+  actual: 2026-01-10 -> 2026-02-03
+
+- [in-progress] Dashboard page | 2026-02-10 -> 2026-03-20 | #EC4899
+  actual: 2026-02-12 -> 2026-03-25
+  depends: API scaffolding
+
+- [todo] Onboarding flow | 2026-03-20 -> 2026-04-25 | #EC4899
+  depends: Auth service, Dashboard page
+
+- [todo] Mobile responsive pass | 2026-04-20 -> 2026-05-10 | #EC4899
+
+## Infrastructure
+
+- [done] CI pipeline | 2026-01-05 -> 2026-01-20 | #10B981
+  actual: 2026-01-05 -> 2026-01-18
+
+- [in-progress] Production environment | 2026-02-15 -> 2026-03-30 | #10B981
+
+- [todo] Observability stack | 2026-03-15 -> 2026-04-20 | #10B981
+  note: "Datadog + Sentry"
+
+- [cancelled] Self-hosted Postgres backup | 2026-03-01 -> 2026-03-20 | #6B7280
+  note: "Replaced by managed RDS snapshots"
+
+## QA
+
+- [todo] E2E test suite | 2026-04-01 -> 2026-05-15 | #F59E0B
+  depends: Dashboard page, Auth service
+
+- [todo] Load testing | 2026-05-01 -> 2026-05-25 | #F59E0B
+  depends: Production environment, E2E test suite
+
+- [todo] Security audit | 2026-05-15 -> 2026-06-10 | #F59E0B
+  note: "External vendor — Trail of Bits"

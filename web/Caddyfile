@@ -1,0 +1,19 @@
+:8080 {
+    root * /srv
+    encode gzip
+
+    # SPA routing
+    try_files {path} /index.html
+    file_server
+
+    # Cache static assets (Vite hashes filenames)
+    @assets {
+        path *.js *.css *.png *.jpg *.jpeg *.gif *.ico *.svg *.woff *.woff2 *.ttf *.eot
+        not path /config.js
+    }
+    header @assets Cache-Control "public, max-age=31536000, immutable"
+
+    # No cache for index.html and runtime config
+    @nocache path /index.html /config.js
+    header @nocache Cache-Control "no-cache, no-store, must-revalidate"
+}

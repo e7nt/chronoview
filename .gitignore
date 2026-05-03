@@ -1,0 +1,40 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+*.egg
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docker
+*.log
+
+# Alembic
+alembic/versions/*.pyc
+
+# Build
+build/
+*.tgz
+
+# pnpm store
+.pnpm-store/
+
+# Runtime config (use config.template.js)
+web/public/config.js
