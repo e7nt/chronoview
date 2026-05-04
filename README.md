@@ -2,6 +2,8 @@
 
 > The beautiful way to share and narrate project timelines.
 
+**Live:** [chronoview.dev](https://chronoview.dev)
+
 Chronoview is a viewer-first Gantt tool backed by a plain-text `.timeline` format. It is designed for the people who *receive* the link, not just the person editing the chart.
 
 ## Highlights

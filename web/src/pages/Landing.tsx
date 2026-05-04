@@ -202,12 +202,23 @@ export function Landing() {
 						<Logo size={28} />
 						<span className="text-[15px] font-bold text-stone-900 tracking-tight">Chronoview</span>
 					</Link>
-					<Link
-						to="/t/new"
-						className="px-4 py-1.5 text-xs font-semibold rounded-lg bg-stone-900 text-white hover:bg-stone-800 transition-colors"
-					>
-						Try it free
-					</Link>
+					<div className="flex items-center gap-3">
+						<a
+							href="https://github.com/e7nt/chronoview"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="p-1.5 text-stone-500 hover:text-stone-900 transition-colors"
+							aria-label="View Chronoview on GitHub"
+						>
+							<Github size={18} />
+						</a>
+						<Link
+							to="/t/new"
+							className="px-4 py-1.5 text-xs font-semibold rounded-lg bg-stone-900 text-white hover:bg-stone-800 transition-colors"
+						>
+							Try it free
+						</Link>
+					</div>
 				</div>
 			</nav>
 
@@ -440,7 +451,17 @@ export function Landing() {
 				<div className="max-w-5xl mx-auto px-6 py-8 flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<Logo size={20} />
-						<span className="text-xs text-stone-400">Built with care.</span>
+						<span className="text-xs text-stone-400">
+							Built with care by{" "}
+							<a
+								href="https://e7nt.com"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="text-stone-500 hover:text-stone-700 transition-colors"
+							>
+								e7nt.com
+							</a>
+						</span>
 					</div>
 					<div className="flex items-center gap-5">
 						<a
