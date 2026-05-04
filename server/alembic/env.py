@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 
@@ -13,6 +14,13 @@ from app.models import Base
 config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
+
+# Allow DATABASE_URL_SYNC to override the hardcoded URL in alembic.ini.
+# In production (Railway, etc.) the connection string lives in env vars;
+# alembic.ini's value is only used for local-dev fallback.
+db_url_override = os.getenv("DATABASE_URL_SYNC")
+if db_url_override:
+    config.set_main_option("sqlalchemy.url", db_url_override)
 
 target_metadata = Base.metadata
 
