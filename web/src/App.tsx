@@ -36,6 +36,7 @@ export default function App() {
 
 					{/* Local-first editor — no auth needed */}
 					<Route path="/t/new" element={<Editor createNew />} />
+					<Route path="/t/demo" element={<Editor loadDemo />} />
 					<Route path="/t/:localId" element={<Editor />} />
 
 					{/* Auth */}

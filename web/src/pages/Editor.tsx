@@ -3,6 +3,7 @@ import { TimelineSource } from "@/components/timeline/TimelineSource";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { type ChartTimeline, buildChartTimeline } from "@/lib/build-chart-timeline";
+import { DEMO_TIMELINE_CONTENT, DEMO_TIMELINE_ID } from "@/lib/demo-timeline";
 import { localStore } from "@/lib/local-store";
 import { parseTimeline } from "@/lib/timeline-parser";
 import { serializeTimeline } from "@/lib/timeline-serializer";
@@ -12,7 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 type ViewMode = "chart" | "split" | "source";
 
-export function Editor({ createNew }: { createNew?: boolean } = {}) {
+export function Editor({ createNew, loadDemo }: { createNew?: boolean; loadDemo?: boolean } = {}) {
 	const { localId } = useParams<{ localId: string }>();
 	const navigate = useNavigate();
 	const { isAuthenticated, user } = useAuth();
@@ -40,6 +41,15 @@ export function Editor({ createNew }: { createNew?: boolean } = {}) {
 
 	// Load timeline from localStorage
 	useEffect(() => {
+		// /t/demo — pre-populate with the bundled showcase timeline.
+		// Uses a fixed id so revisits overwrite rather than pile up entries.
+		if (loadDemo) {
+			localStore.saveTimeline(DEMO_TIMELINE_ID, DEMO_TIMELINE_CONTENT);
+			localStore.setActiveId(DEMO_TIMELINE_ID);
+			navigate(`/t/${DEMO_TIMELINE_ID}`, { replace: true });
+			return;
+		}
+
 		// /t/new — create a fresh timeline and navigate to it
 		if (createNew) {
 			const created = localStore.createTimeline();
@@ -67,7 +77,7 @@ export function Editor({ createNew }: { createNew?: boolean } = {}) {
 		setSourceText(content);
 		setSavedText(content);
 		setShowHero(false);
-	}, [localId, createNew, navigate]);
+	}, [localId, createNew, loadDemo, navigate]);
 
 	// Derive parsed structure from source text
 	const parsedTimeline = useMemo(() => {
