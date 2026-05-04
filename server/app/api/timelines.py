@@ -8,7 +8,7 @@ import uuid
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
-from sqlalchemy import select, update
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import get_current_user
@@ -20,6 +20,7 @@ router = APIRouter(prefix="/api/timelines", tags=["timelines"])
 
 
 # --- Schemas ---
+
 
 class TimelineCreate(BaseModel):
     title: str = Field(min_length=1, max_length=255)
@@ -116,7 +117,10 @@ class ShareLinkResponse(BaseModel):
 
 # --- Helpers ---
 
-async def _get_user_role(db: AsyncSession, timeline_id: uuid.UUID, user_id: uuid.UUID) -> str | None:
+
+async def _get_user_role(
+    db: AsyncSession, timeline_id: uuid.UUID, user_id: uuid.UUID
+) -> str | None:
     result = await db.execute(
         select(Timeline.id).where(Timeline.id == timeline_id, Timeline.owner_id == user_id)
     )
@@ -131,7 +135,9 @@ async def _get_user_role(db: AsyncSession, timeline_id: uuid.UUID, user_id: uuid
     return result.scalar_one_or_none()
 
 
-async def _get_timeline(db: AsyncSession, timeline_id: uuid.UUID, user_id: uuid.UUID, require_write: bool = False) -> Timeline:
+async def _get_timeline(
+    db: AsyncSession, timeline_id: uuid.UUID, user_id: uuid.UUID, require_write: bool = False
+) -> Timeline:
     role = await _get_user_role(db, timeline_id, user_id)
     if not role:
         raise HTTPException(status_code=404, detail="Timeline not found")
@@ -147,6 +153,7 @@ def _default_content(title: str) -> str:
 
 # --- Timeline CRUD ---
 
+
 @router.get("", response_model=list[TimelineListItem])
 async def list_timelines(
     db: AsyncSession = Depends(get_db),
@@ -157,8 +164,12 @@ async def list_timelines(
     )
     owned = [
         TimelineListItem(
-            id=t.id, owner_id=t.owner_id, title=t.title, role="owner",
-            created_at=str(t.created_at), updated_at=str(t.updated_at),
+            id=t.id,
+            owner_id=t.owner_id,
+            title=t.title,
+            role="owner",
+            created_at=str(t.created_at),
+            updated_at=str(t.updated_at),
         )
         for t in own_result.scalars().all()
     ]
@@ -171,8 +182,12 @@ async def list_timelines(
     )
     shared = [
         TimelineListItem(
-            id=t.id, owner_id=t.owner_id, title=t.title, role=role,
-            created_at=str(t.created_at), updated_at=str(t.updated_at),
+            id=t.id,
+            owner_id=t.owner_id,
+            title=t.title,
+            role=role,
+            created_at=str(t.created_at),
+            updated_at=str(t.updated_at),
         )
         for t, role in collab_result.all()
     ]
@@ -192,8 +207,12 @@ async def create_timeline(
     await db.commit()
     await db.refresh(timeline)
     return TimelineListItem(
-        id=timeline.id, owner_id=timeline.owner_id, title=timeline.title, role="owner",
-        created_at=str(timeline.created_at), updated_at=str(timeline.updated_at),
+        id=timeline.id,
+        owner_id=timeline.owner_id,
+        title=timeline.title,
+        role="owner",
+        created_at=str(timeline.created_at),
+        updated_at=str(timeline.updated_at),
     )
 
 
@@ -271,6 +290,7 @@ async def delete_timeline(
 
 # --- Collaborators (unchanged) ---
 
+
 @router.get("/{timeline_id}/collaborators", response_model=list[CollaboratorResponse])
 async def list_collaborators(
     timeline_id: uuid.UUID,
@@ -290,10 +310,17 @@ async def list_collaborators(
         if c.user_id:
             user_result = await db.execute(select(User.display_name).where(User.id == c.user_id))
             display_name = user_result.scalar_one_or_none()
-        responses.append(CollaboratorResponse(
-            id=c.id, timeline_id=c.timeline_id, email=c.email, role=c.role,
-            user_id=c.user_id, display_name=display_name, created_at=str(c.created_at),
-        ))
+        responses.append(
+            CollaboratorResponse(
+                id=c.id,
+                timeline_id=c.timeline_id,
+                email=c.email,
+                role=c.role,
+                user_id=c.user_id,
+                display_name=display_name,
+                created_at=str(c.created_at),
+            )
+        )
     return responses
 
 
@@ -325,30 +352,42 @@ async def invite_collaborator(
     existing_user = user_result.scalar_one_or_none()
 
     collab = TimelineCollaborator(
-        timeline_id=timeline_id, user_id=existing_user.id if existing_user else None,
-        email=email, role=data.role, invited_by=user.id,
+        timeline_id=timeline_id,
+        user_id=existing_user.id if existing_user else None,
+        email=email,
+        role=data.role,
+        invited_by=user.id,
     )
     db.add(collab)
     await db.commit()
     await db.refresh(collab)
 
     return CollaboratorResponse(
-        id=collab.id, timeline_id=collab.timeline_id, email=collab.email, role=collab.role,
-        user_id=collab.user_id, display_name=existing_user.display_name if existing_user else None,
+        id=collab.id,
+        timeline_id=collab.timeline_id,
+        email=collab.email,
+        role=collab.role,
+        user_id=collab.user_id,
+        display_name=existing_user.display_name if existing_user else None,
         created_at=str(collab.created_at),
     )
 
 
 @router.put("/{timeline_id}/collaborators/{collab_id}", response_model=CollaboratorResponse)
 async def update_collaborator(
-    timeline_id: uuid.UUID, collab_id: uuid.UUID, data: CollaboratorUpdate,
-    db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user),
+    timeline_id: uuid.UUID,
+    collab_id: uuid.UUID,
+    data: CollaboratorUpdate,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
 ):
     timeline = await _get_timeline(db, timeline_id, user.id, require_write=True)
     if timeline.owner_id != user.id:
         raise HTTPException(status_code=403, detail="Only the owner can change collaborator roles")
     result = await db.execute(
-        select(TimelineCollaborator).where(TimelineCollaborator.id == collab_id, TimelineCollaborator.timeline_id == timeline_id)
+        select(TimelineCollaborator).where(
+            TimelineCollaborator.id == collab_id, TimelineCollaborator.timeline_id == timeline_id
+        )
     )
     collab = result.scalar_one_or_none()
     if not collab:
@@ -361,21 +400,30 @@ async def update_collaborator(
         user_result = await db.execute(select(User.display_name).where(User.id == collab.user_id))
         display_name = user_result.scalar_one_or_none()
     return CollaboratorResponse(
-        id=collab.id, timeline_id=collab.timeline_id, email=collab.email, role=collab.role,
-        user_id=collab.user_id, display_name=display_name, created_at=str(collab.created_at),
+        id=collab.id,
+        timeline_id=collab.timeline_id,
+        email=collab.email,
+        role=collab.role,
+        user_id=collab.user_id,
+        display_name=display_name,
+        created_at=str(collab.created_at),
     )
 
 
 @router.delete("/{timeline_id}/collaborators/{collab_id}", status_code=204)
 async def remove_collaborator(
-    timeline_id: uuid.UUID, collab_id: uuid.UUID,
-    db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user),
+    timeline_id: uuid.UUID,
+    collab_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
 ):
     timeline = await _get_timeline(db, timeline_id, user.id, require_write=True)
     if timeline.owner_id != user.id:
         raise HTTPException(status_code=403, detail="Only the owner can remove collaborators")
     result = await db.execute(
-        select(TimelineCollaborator).where(TimelineCollaborator.id == collab_id, TimelineCollaborator.timeline_id == timeline_id)
+        select(TimelineCollaborator).where(
+            TimelineCollaborator.id == collab_id, TimelineCollaborator.timeline_id == timeline_id
+        )
     )
     collab = result.scalar_one_or_none()
     if not collab:
@@ -386,44 +434,75 @@ async def remove_collaborator(
 
 # --- Versions ---
 
+
 @router.get("/{timeline_id}/versions", response_model=list[VersionResponse])
 async def list_versions(
     timeline_id: uuid.UUID,
-    db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
 ):
     await _get_timeline(db, timeline_id, user.id, require_write=True)
     result = await db.execute(
-        select(TimelineVersion).where(TimelineVersion.timeline_id == timeline_id).order_by(TimelineVersion.created_at.desc())
+        select(TimelineVersion)
+        .where(TimelineVersion.timeline_id == timeline_id)
+        .order_by(TimelineVersion.created_at.desc())
     )
     return [
-        VersionResponse(id=v.id, timeline_id=v.timeline_id, label=v.label, created_by=v.created_by, created_at=str(v.created_at))
+        VersionResponse(
+            id=v.id,
+            timeline_id=v.timeline_id,
+            label=v.label,
+            created_by=v.created_by,
+            created_at=str(v.created_at),
+        )
         for v in result.scalars().all()
     ]
 
 
 @router.post("/{timeline_id}/versions", response_model=VersionResponse, status_code=201)
 async def create_version(
-    timeline_id: uuid.UUID, data: VersionCreate,
-    db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user),
+    timeline_id: uuid.UUID,
+    data: VersionCreate,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
 ):
     await _get_timeline(db, timeline_id, user.id, require_write=True)
-    version = TimelineVersion(timeline_id=timeline_id, content=data.content, label=data.label, created_by=user.id)
+    version = TimelineVersion(
+        timeline_id=timeline_id, content=data.content, label=data.label, created_by=user.id
+    )
     db.add(version)
     await db.commit()
     await db.refresh(version)
-    return VersionResponse(id=version.id, timeline_id=version.timeline_id, label=version.label, created_by=version.created_by, created_at=str(version.created_at))
+    return VersionResponse(
+        id=version.id,
+        timeline_id=version.timeline_id,
+        label=version.label,
+        created_by=version.created_by,
+        created_at=str(version.created_at),
+    )
 
 
 @router.get("/{timeline_id}/versions/{version_id}", response_model=VersionFull)
 async def get_version(
-    timeline_id: uuid.UUID, version_id: uuid.UUID,
-    db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user),
+    timeline_id: uuid.UUID,
+    version_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
 ):
     await _get_timeline(db, timeline_id, user.id, require_write=True)
     result = await db.execute(
-        select(TimelineVersion).where(TimelineVersion.id == version_id, TimelineVersion.timeline_id == timeline_id)
+        select(TimelineVersion).where(
+            TimelineVersion.id == version_id, TimelineVersion.timeline_id == timeline_id
+        )
     )
     version = result.scalar_one_or_none()
     if not version:
         raise HTTPException(status_code=404, detail="Version not found")
-    return VersionFull(id=version.id, timeline_id=version.timeline_id, content=version.content, label=version.label, created_by=version.created_by, created_at=str(version.created_at))
+    return VersionFull(
+        id=version.id,
+        timeline_id=version.timeline_id,
+        content=version.content,
+        label=version.label,
+        created_by=version.created_by,
+        created_at=str(version.created_at),
+    )

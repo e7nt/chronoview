@@ -285,7 +285,10 @@ export function parseTimeline(text: string): ParsedTimeline {
 					currentTask.url = value;
 					break;
 				case "depends":
-					currentTask.depends_on = value.split(",").map((d) => d.trim()).filter(Boolean);
+					currentTask.depends_on = value
+						.split(",")
+						.map((d) => d.trim())
+						.filter(Boolean);
 					break;
 			}
 			continue;
@@ -320,12 +323,16 @@ export function validateTimeline(text: string): ValidationResult {
 	for (const section of parsed.sections) {
 		for (const task of section.tasks) {
 			if (!VALID_STATUSES.has(task.status)) {
-				errors.push(`Task "${task.name}": invalid status "${task.status}" (must be one of: ${[...VALID_STATUSES].join(", ")})`);
+				errors.push(
+					`Task "${task.name}": invalid status "${task.status}" (must be one of: ${[...VALID_STATUSES].join(", ")})`,
+				);
 			}
 
 			if (task.planned_start && task.planned_end) {
 				if (task.planned_end < task.planned_start) {
-					errors.push(`Task "${task.name}": end date (${task.planned_end}) is before start date (${task.planned_start})`);
+					errors.push(
+						`Task "${task.name}": end date (${task.planned_end}) is before start date (${task.planned_start})`,
+					);
 				}
 			}
 		}

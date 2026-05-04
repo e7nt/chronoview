@@ -1,7 +1,7 @@
+import { useAuth } from "@/lib/auth";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { useAuth } from "@/lib/auth";
 
 export function Register() {
 	const { register } = useAuth();
@@ -44,11 +44,12 @@ export function Register() {
 					<h1 className="text-xl font-bold text-stone-900 tracking-tight">Chronoview</h1>
 				</div>
 
-				<p className="text-stone-500 text-sm mb-6 text-center">
-					Create your account
-				</p>
+				<p className="text-stone-500 text-sm mb-6 text-center">Create your account</p>
 
-				<form onSubmit={handleSubmit} className="bg-white rounded-xl border border-stone-200 p-6 shadow-sm space-y-4">
+				<form
+					onSubmit={handleSubmit}
+					className="bg-white rounded-xl border border-stone-200 p-6 shadow-sm space-y-4"
+				>
 					{error && (
 						<div className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
 							{error}

@@ -1,7 +1,7 @@
-import { memo } from "react";
-import { motion } from "framer-motion";
 import type { ChartTask } from "@/lib/build-chart-timeline";
 import { STATUS_COLORS } from "@/lib/constants";
+import { motion } from "framer-motion";
+import { memo } from "react";
 
 interface GanttBarProps {
 	task: ChartTask;
@@ -123,7 +123,14 @@ export const GanttBar = memo(function GanttBar({
 							<line x1="0" y1="0" x2="0" y2="6" stroke="#EF4444" strokeWidth="1" opacity="0.3" />
 						</pattern>
 					</defs>
-					<rect x={barX} y={y} width={barWidth} height={height} rx={5} fill={`url(#hatch-${task.id})`} />
+					<rect
+						x={barX}
+						y={y}
+						width={barWidth}
+						height={height}
+						rx={5}
+						fill={`url(#hatch-${task.id})`}
+					/>
 				</>
 			)}
 
@@ -147,10 +154,16 @@ export const GanttBar = memo(function GanttBar({
 				dominantBaseline="middle"
 				fill={
 					isCancelled
-						? (dark ? "#57534E" : "#A8A29E")
+						? dark
+							? "#57534E"
+							: "#A8A29E"
 						: isSelected
-							? (dark ? "#E7E5E4" : "#1C1917")
-							: (dark ? "#A8A29E" : "#44403C")
+							? dark
+								? "#E7E5E4"
+								: "#1C1917"
+							: dark
+								? "#A8A29E"
+								: "#44403C"
 				}
 				fontWeight={isCancelled ? 400 : 500}
 				fontSize={13}
@@ -187,8 +200,26 @@ export const GanttBar = memo(function GanttBar({
 						onPointerDown={onResizeStartLeft}
 					/>
 					{/* Left grip lines */}
-					<line x1={barX + 3} y1={y + height * 0.3} x2={barX + 3} y2={y + height * 0.7} stroke={color} strokeWidth={1} opacity={0.4} style={{ pointerEvents: "none" }} />
-					<line x1={barX + 5} y1={y + height * 0.3} x2={barX + 5} y2={y + height * 0.7} stroke={color} strokeWidth={1} opacity={0.4} style={{ pointerEvents: "none" }} />
+					<line
+						x1={barX + 3}
+						y1={y + height * 0.3}
+						x2={barX + 3}
+						y2={y + height * 0.7}
+						stroke={color}
+						strokeWidth={1}
+						opacity={0.4}
+						style={{ pointerEvents: "none" }}
+					/>
+					<line
+						x1={barX + 5}
+						y1={y + height * 0.3}
+						x2={barX + 5}
+						y2={y + height * 0.7}
+						stroke={color}
+						strokeWidth={1}
+						opacity={0.4}
+						style={{ pointerEvents: "none" }}
+					/>
 
 					{/* Right resize handle */}
 					<rect
@@ -202,8 +233,26 @@ export const GanttBar = memo(function GanttBar({
 						onPointerDown={onResizeStartRight}
 					/>
 					{/* Right grip lines */}
-					<line x1={barX + barWidth - 5} y1={y + height * 0.3} x2={barX + barWidth - 5} y2={y + height * 0.7} stroke={color} strokeWidth={1} opacity={0.4} style={{ pointerEvents: "none" }} />
-					<line x1={barX + barWidth - 3} y1={y + height * 0.3} x2={barX + barWidth - 3} y2={y + height * 0.7} stroke={color} strokeWidth={1} opacity={0.4} style={{ pointerEvents: "none" }} />
+					<line
+						x1={barX + barWidth - 5}
+						y1={y + height * 0.3}
+						x2={barX + barWidth - 5}
+						y2={y + height * 0.7}
+						stroke={color}
+						strokeWidth={1}
+						opacity={0.4}
+						style={{ pointerEvents: "none" }}
+					/>
+					<line
+						x1={barX + barWidth - 3}
+						y1={y + height * 0.3}
+						x2={barX + barWidth - 3}
+						y2={y + height * 0.7}
+						stroke={color}
+						strokeWidth={1}
+						opacity={0.4}
+						style={{ pointerEvents: "none" }}
+					/>
 				</>
 			)}
 		</motion.g>

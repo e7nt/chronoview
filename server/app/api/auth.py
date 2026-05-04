@@ -17,7 +17,9 @@ async def _backfill_collaborator_access(db: AsyncSession, user: User):
         return
     await db.execute(
         update(TimelineCollaborator)
-        .where(TimelineCollaborator.email == user.email.lower(), TimelineCollaborator.user_id.is_(None))
+        .where(
+            TimelineCollaborator.email == user.email.lower(), TimelineCollaborator.user_id.is_(None)
+        )
         .values(user_id=user.id)
     )
     await db.commit()
@@ -27,6 +29,7 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
 # --- Schemas ---
+
 
 class RegisterRequest(BaseModel):
     email: EmailStr
@@ -59,6 +62,7 @@ class UserResponse(BaseModel):
 
 
 # --- Routes ---
+
 
 @router.post("/register", response_model=TokenResponse)
 async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):

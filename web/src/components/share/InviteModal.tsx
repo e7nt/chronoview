@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { X, UserPlus, Trash2 } from "lucide-react";
 import { api } from "@/lib/api";
 import type { Collaborator } from "@/lib/types";
+import { motion } from "framer-motion";
+import { Trash2, UserPlus, X } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
 interface InviteModalProps {
 	timelineId: string;
@@ -75,7 +75,11 @@ export function InviteModal({ timelineId, onClose }: InviteModalProps) {
 				{/* Header */}
 				<div className="flex items-center justify-between px-5 py-4 border-b border-stone-200">
 					<h2 className="text-sm font-semibold text-stone-800">Invite People</h2>
-					<button type="button" onClick={onClose} className="p-1 rounded-md hover:bg-stone-100 text-stone-400">
+					<button
+						type="button"
+						onClick={onClose}
+						className="p-1 rounded-md hover:bg-stone-100 text-stone-400"
+					>
 						<X size={14} />
 					</button>
 				</div>
@@ -109,9 +113,7 @@ export function InviteModal({ timelineId, onClose }: InviteModalProps) {
 						</button>
 					</form>
 
-					{error && (
-						<p className="text-xs text-red-500">{error}</p>
-					)}
+					{error && <p className="text-xs text-red-500">{error}</p>}
 
 					{/* Collaborator list */}
 					{collaborators.length > 0 && (
@@ -120,7 +122,10 @@ export function InviteModal({ timelineId, onClose }: InviteModalProps) {
 								Collaborators ({collaborators.length})
 							</p>
 							{collaborators.map((c) => (
-								<div key={c.id} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-stone-50">
+								<div
+									key={c.id}
+									className="flex items-center gap-3 px-3 py-2 rounded-lg bg-stone-50"
+								>
 									<div className="flex-1 min-w-0">
 										<p className="text-xs font-medium text-stone-700 truncate">{c.email}</p>
 										{c.display_name && (

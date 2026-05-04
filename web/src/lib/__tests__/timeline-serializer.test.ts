@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { serializeTimeline } from "../timeline-serializer";
 import type { Timeline } from "../types";
 
@@ -51,12 +51,38 @@ const MINIMAL_TIMELINE: Timeline = {
 		},
 	],
 	milestones: [
-		{ id: "ms-1", timeline_id: "tl-1", date: "2026-03-01", label: "Alpha Release", kind: "milestone", sort_order: 0 },
-		{ id: "ph-1", timeline_id: "tl-1", date: "2026-01-01", label: "Sprint 1", kind: "phase", sort_order: 1 },
+		{
+			id: "ms-1",
+			timeline_id: "tl-1",
+			date: "2026-03-01",
+			label: "Alpha Release",
+			kind: "milestone",
+			sort_order: 0,
+		},
+		{
+			id: "ph-1",
+			timeline_id: "tl-1",
+			date: "2026-01-01",
+			label: "Sprint 1",
+			kind: "phase",
+			sort_order: 1,
+		},
 	],
 	announcements: [
-		{ id: "ann-1", timeline_id: "tl-1", date: "2026-04-10", content: "Scheduled downtime", type: "downtime" },
-		{ id: "ann-2", timeline_id: "tl-1", date: "2026-04-15", content: "General update", type: "general" },
+		{
+			id: "ann-1",
+			timeline_id: "tl-1",
+			date: "2026-04-10",
+			content: "Scheduled downtime",
+			type: "downtime",
+		},
+		{
+			id: "ann-2",
+			timeline_id: "tl-1",
+			date: "2026-04-15",
+			content: "General update",
+			type: "general",
+		},
 	],
 };
 
@@ -124,25 +150,29 @@ describe("serializeTimeline", () => {
 	it("serializes all task metadata", () => {
 		const timelineWithFullTask: Timeline = {
 			...MINIMAL_TIMELINE,
-			sections: [{
-				...MINIMAL_TIMELINE.sections[0]!,
-				tasks: [{
-					id: "t-full",
-					section_id: "sec-1",
-					name: "Full task",
-					status: "blocked",
-					color: "#EF4444",
-					planned_start: "2026-05-01",
-					planned_end: "2026-05-15",
-					actual_start: "2026-05-02",
-					actual_end: "2026-05-20",
-					blocked_reason: "Waiting on contract",
-					note: "Important task",
-					url: "https://jira.example.com/T-123",
-					sort_order: 0,
-					depends_on: ["dep-1", "dep-2"],
-				}],
-			}],
+			sections: [
+				{
+					...MINIMAL_TIMELINE.sections[0]!,
+					tasks: [
+						{
+							id: "t-full",
+							section_id: "sec-1",
+							name: "Full task",
+							status: "blocked",
+							color: "#EF4444",
+							planned_start: "2026-05-01",
+							planned_end: "2026-05-15",
+							actual_start: "2026-05-02",
+							actual_end: "2026-05-20",
+							blocked_reason: "Waiting on contract",
+							note: "Important task",
+							url: "https://jira.example.com/T-123",
+							sort_order: 0,
+							depends_on: ["dep-1", "dep-2"],
+						},
+					],
+				},
+			],
 			milestones: [],
 			announcements: [],
 		};

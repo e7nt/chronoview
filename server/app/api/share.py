@@ -1,6 +1,6 @@
 import secrets
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import bcrypt
 from fastapi import APIRouter, Depends, HTTPException
@@ -27,7 +27,7 @@ class PasscodeVerify(BaseModel):
 
 
 def _check_expiry(share_link: ShareLink) -> None:
-    if share_link.expires_at and share_link.expires_at < datetime.now(timezone.utc):
+    if share_link.expires_at and share_link.expires_at < datetime.now(UTC):
         raise HTTPException(status_code=410, detail="Share link has expired")
 
 
@@ -70,15 +70,20 @@ async def create_share_link(
         passcode_hash = bcrypt.hashpw(data.passcode.encode(), bcrypt.gensalt()).decode()
 
     share_link = ShareLink(
-        timeline_id=timeline_id, slug=slug, is_public=data.is_public,
-        passcode_hash=passcode_hash, expires_at=data.expires_at,
+        timeline_id=timeline_id,
+        slug=slug,
+        is_public=data.is_public,
+        passcode_hash=passcode_hash,
+        expires_at=data.expires_at,
     )
     db.add(share_link)
     await db.commit()
     await db.refresh(share_link)
     return {
-        "id": str(share_link.id), "timeline_id": str(share_link.timeline_id),
-        "slug": share_link.slug, "is_public": share_link.is_public,
+        "id": str(share_link.id),
+        "timeline_id": str(share_link.timeline_id),
+        "slug": share_link.slug,
+        "is_public": share_link.is_public,
         "expires_at": str(share_link.expires_at) if share_link.expires_at else None,
         "created_at": str(share_link.created_at),
     }

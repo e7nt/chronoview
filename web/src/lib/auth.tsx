@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { authApi, type AuthUser } from "./auth-api";
+import { type ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { type AuthUser, authApi } from "./auth-api";
 
 interface AuthContextType {
 	user: AuthUser | null;

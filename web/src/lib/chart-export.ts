@@ -56,7 +56,10 @@ export async function exportChart(opts: ExportOptions): Promise<void> {
 		wmY + (WATERMARK_HEIGHT * scale) / 2,
 	);
 
-	const filename = `${title.replace(/[^a-zA-Z0-9-_ ]/g, "").replace(/\s+/g, "-").toLowerCase()}-timeline.png`;
+	const filename = `${title
+		.replace(/[^a-zA-Z0-9-_ ]/g, "")
+		.replace(/\s+/g, "-")
+		.toLowerCase()}-timeline.png`;
 
 	finalCanvas.toBlob((blob) => {
 		if (!blob) return;

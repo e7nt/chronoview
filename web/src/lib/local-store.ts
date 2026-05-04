@@ -124,7 +124,7 @@ export const localStore = {
 
 	/** Get or create the active timeline. Returns id + content. */
 	getOrCreateActive(): { id: string; content: string } {
-		let activeId = localStore.getActiveId();
+		const activeId = localStore.getActiveId();
 
 		// Try loading active
 		if (activeId) {

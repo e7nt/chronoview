@@ -1,7 +1,7 @@
+import { useAuth } from "@/lib/auth";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { useAuth } from "@/lib/auth";
 
 export function SignIn() {
 	const { login } = useAuth();
@@ -42,11 +42,12 @@ export function SignIn() {
 					<h1 className="text-xl font-bold text-stone-900 tracking-tight">Chronoview</h1>
 				</div>
 
-				<p className="text-stone-500 text-sm mb-6 text-center">
-					Sign in to manage your timelines.
-				</p>
+				<p className="text-stone-500 text-sm mb-6 text-center">Sign in to manage your timelines.</p>
 
-				<form onSubmit={handleSubmit} className="bg-white rounded-xl border border-stone-200 p-6 shadow-sm space-y-4">
+				<form
+					onSubmit={handleSubmit}
+					className="bg-white rounded-xl border border-stone-200 p-6 shadow-sm space-y-4"
+				>
 					{error && (
 						<div className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
 							{error}

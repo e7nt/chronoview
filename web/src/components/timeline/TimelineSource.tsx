@@ -1,5 +1,5 @@
+import { Check, Copy, HelpCircle, X } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
-import { Copy, Check, HelpCircle, X } from "lucide-react";
 
 interface TimelineSourceProps {
 	source: string;
@@ -284,16 +284,17 @@ export function TimelineSource({ source, editable = false, onChange }: TimelineS
 		setTimeout(() => setCopied(false), 2000);
 	};
 
-
 	return (
 		<div className="h-full flex flex-col bg-stone-50">
 			{/* Header */}
 			<div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2 border-b border-border-subtle bg-white">
 				<div className="flex items-center gap-2 min-w-0">
 					<span className="text-xs font-mono text-stone-400">.timeline</span>
-					<span className={`text-[10px] px-1.5 py-0.5 rounded font-medium shrink-0 ${
-						editable ? "bg-amber-100 text-amber-700" : "bg-stone-100 text-stone-500"
-					}`}>
+					<span
+						className={`text-[10px] px-1.5 py-0.5 rounded font-medium shrink-0 ${
+							editable ? "bg-amber-100 text-amber-700" : "bg-stone-100 text-stone-500"
+						}`}
+					>
 						{editable ? "EDITING" : "FORMAT"}
 					</span>
 				</div>
@@ -302,7 +303,9 @@ export function TimelineSource({ source, editable = false, onChange }: TimelineS
 						type="button"
 						onClick={() => setShowGuide((g) => !g)}
 						className={`flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-md transition-colors ${
-							showGuide ? "bg-stone-800 text-white" : "bg-stone-100 hover:bg-stone-200 text-stone-600"
+							showGuide
+								? "bg-stone-800 text-white"
+								: "bg-stone-100 hover:bg-stone-200 text-stone-600"
 						}`}
 					>
 						<HelpCircle size={12} />
@@ -324,11 +327,17 @@ export function TimelineSource({ source, editable = false, onChange }: TimelineS
 				<div className="border-b border-border-subtle bg-white p-4 max-h-[50vh] overflow-y-auto">
 					<div className="flex items-center justify-between mb-3">
 						<h3 className="text-xs font-semibold text-stone-700">.timeline Format Guide</h3>
-						<button type="button" onClick={() => setShowGuide(false)} className="p-1 rounded hover:bg-stone-100 text-stone-400">
+						<button
+							type="button"
+							onClick={() => setShowGuide(false)}
+							className="p-1 rounded hover:bg-stone-100 text-stone-400"
+						>
 							<X size={12} />
 						</button>
 					</div>
-					<pre className="text-[11px] leading-5 font-mono text-stone-600 whitespace-pre-wrap">{FORMAT_GUIDE}</pre>
+					<pre className="text-[11px] leading-5 font-mono text-stone-600 whitespace-pre-wrap">
+						{FORMAT_GUIDE}
+					</pre>
 				</div>
 			)}
 
@@ -344,7 +353,11 @@ export function TimelineSource({ source, editable = false, onChange }: TimelineS
 							aria-hidden="true"
 						>
 							{lines.map((_, i) => (
-								<div key={i} className="w-10 text-right pr-3 text-stone-400 text-[11px]" style={{ height: 24, lineHeight: "24px" }}>
+								<div
+									key={i}
+									className="w-10 text-right pr-3 text-stone-400 text-[11px]"
+									style={{ height: 24, lineHeight: "24px" }}
+								>
 									{i + 1}
 								</div>
 							))}

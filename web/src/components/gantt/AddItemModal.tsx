@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { X, ListTodo, Diamond, Megaphone, FolderPlus, Layers } from "lucide-react";
+import { Diamond, FolderPlus, Layers, ListTodo, Megaphone, X } from "lucide-react";
+import { useState } from "react";
 
 type ItemType = "task" | "milestone" | "phase" | "announcement" | "section";
 
@@ -23,16 +23,65 @@ const ITEM_TYPES: { type: ItemType; label: string; icon: typeof ListTodo }[] = [
 ];
 
 const STATUSES = [
-	{ value: "todo", label: "To Do", bg: "bg-stone-100", activeBg: "bg-stone-500", text: "text-stone-600", activeText: "text-white" },
-	{ value: "in-progress", label: "In Progress", bg: "bg-blue-50", activeBg: "bg-blue-500", text: "text-blue-600", activeText: "text-white" },
-	{ value: "done", label: "Done", bg: "bg-green-50", activeBg: "bg-green-500", text: "text-green-700", activeText: "text-white" },
-	{ value: "blocked", label: "Blocked", bg: "bg-red-50", activeBg: "bg-red-500", text: "text-red-600", activeText: "text-white" },
+	{
+		value: "todo",
+		label: "To Do",
+		bg: "bg-stone-100",
+		activeBg: "bg-stone-500",
+		text: "text-stone-600",
+		activeText: "text-white",
+	},
+	{
+		value: "in-progress",
+		label: "In Progress",
+		bg: "bg-blue-50",
+		activeBg: "bg-blue-500",
+		text: "text-blue-600",
+		activeText: "text-white",
+	},
+	{
+		value: "done",
+		label: "Done",
+		bg: "bg-green-50",
+		activeBg: "bg-green-500",
+		text: "text-green-700",
+		activeText: "text-white",
+	},
+	{
+		value: "blocked",
+		label: "Blocked",
+		bg: "bg-red-50",
+		activeBg: "bg-red-500",
+		text: "text-red-600",
+		activeText: "text-white",
+	},
 ];
 
 const ANNOUNCEMENT_TYPES = [
-	{ value: "general", label: "General", bg: "bg-stone-100", activeBg: "bg-stone-500", text: "text-stone-600", activeText: "text-white" },
-	{ value: "downtime", label: "Downtime", bg: "bg-red-50", activeBg: "bg-red-500", text: "text-red-600", activeText: "text-white" },
-	{ value: "note", label: "Note", bg: "bg-amber-50", activeBg: "bg-amber-500", text: "text-amber-700", activeText: "text-white" },
+	{
+		value: "general",
+		label: "General",
+		bg: "bg-stone-100",
+		activeBg: "bg-stone-500",
+		text: "text-stone-600",
+		activeText: "text-white",
+	},
+	{
+		value: "downtime",
+		label: "Downtime",
+		bg: "bg-red-50",
+		activeBg: "bg-red-500",
+		text: "text-red-600",
+		activeText: "text-white",
+	},
+	{
+		value: "note",
+		label: "Note",
+		bg: "bg-amber-50",
+		activeBg: "bg-amber-500",
+		text: "text-amber-700",
+		activeText: "text-white",
+	},
 ];
 
 export function AddItemModal({
@@ -77,7 +126,9 @@ export function AddItemModal({
 	const border = dark ? "border-stone-700" : "border-stone-200";
 	const text = dark ? "text-stone-200" : "text-stone-800";
 	const textMuted = dark ? "text-stone-400" : "text-stone-500";
-	const inputBg = dark ? "bg-stone-800 border-stone-700 text-stone-200" : "bg-white border-stone-200 text-stone-800";
+	const inputBg = dark
+		? "bg-stone-800 border-stone-700 text-stone-200"
+		: "bg-white border-stone-200 text-stone-800";
 
 	const inputClass = `w-full px-3 py-2 rounded-lg border ${inputBg} text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-300 dark:focus:ring-stone-600`;
 	const labelClass = `block text-[10px] font-semibold uppercase tracking-widest mb-1.5 ${textMuted}`;
@@ -189,7 +240,11 @@ export function AddItemModal({
 				{/* Header */}
 				<div className={`flex items-center justify-between px-5 py-4 border-b ${border}`}>
 					<h2 className={`text-sm font-semibold ${text}`}>Add Item</h2>
-					<button type="button" onClick={onClose} className={`p-1 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800 ${textMuted}`}>
+					<button
+						type="button"
+						onClick={onClose}
+						className={`p-1 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800 ${textMuted}`}
+					>
 						<X size={14} />
 					</button>
 				</div>
@@ -220,7 +275,14 @@ export function AddItemModal({
 						<div className="space-y-3">
 							<div>
 								<label className={labelClass}>Section Name</label>
-								<input type="text" value={sectionName} onChange={(e) => setSectionName(e.target.value)} placeholder="e.g. Backend Team, Design, QA" className={inputClass} autoFocus />
+								<input
+									type="text"
+									value={sectionName}
+									onChange={(e) => setSectionName(e.target.value)}
+									placeholder="e.g. Backend Team, Design, QA"
+									className={inputClass}
+									autoFocus
+								/>
 							</div>
 							<p className={`text-[10px] ${textMuted}`}>
 								Sections are swim lanes — group tasks by team, workstream, or phase.
@@ -233,13 +295,26 @@ export function AddItemModal({
 						<div className="space-y-3">
 							<div>
 								<label className={labelClass}>Name</label>
-								<input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="What needs to be done..." className={inputClass} autoFocus />
+								<input
+									type="text"
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+									placeholder="What needs to be done..."
+									className={inputClass}
+									autoFocus
+								/>
 							</div>
 							<div>
 								<label className={labelClass}>Section</label>
-								<select value={sectionId} onChange={(e) => setSectionId(e.target.value)} className={inputClass}>
+								<select
+									value={sectionId}
+									onChange={(e) => setSectionId(e.target.value)}
+									className={inputClass}
+								>
 									{sections.map((s) => (
-										<option key={s.id} value={s.id}>{s.name}</option>
+										<option key={s.id} value={s.id}>
+											{s.name}
+										</option>
 									))}
 								</select>
 							</div>
@@ -265,20 +340,42 @@ export function AddItemModal({
 							<div className="grid grid-cols-2 gap-3">
 								<div>
 									<label className={labelClass}>Planned Start</label>
-									<input type="date" value={plannedStart} onChange={(e) => setPlannedStart(e.target.value)} className={inputClass} />
+									<input
+										type="date"
+										value={plannedStart}
+										onChange={(e) => setPlannedStart(e.target.value)}
+										className={inputClass}
+									/>
 								</div>
 								<div>
 									<label className={labelClass}>Planned End</label>
-									<input type="date" value={plannedEnd} onChange={(e) => setPlannedEnd(e.target.value)} className={inputClass} />
+									<input
+										type="date"
+										value={plannedEnd}
+										onChange={(e) => setPlannedEnd(e.target.value)}
+										className={inputClass}
+									/>
 								</div>
 							</div>
 							<div>
 								<label className={labelClass}>Link (optional)</label>
-								<input type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://..." className={inputClass} />
+								<input
+									type="url"
+									value={url}
+									onChange={(e) => setUrl(e.target.value)}
+									placeholder="https://..."
+									className={inputClass}
+								/>
 							</div>
 							<div>
 								<label className={labelClass}>Note (optional)</label>
-								<textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="Additional context..." rows={2} className={inputClass} />
+								<textarea
+									value={note}
+									onChange={(e) => setNote(e.target.value)}
+									placeholder="Additional context..."
+									rows={2}
+									className={inputClass}
+								/>
 							</div>
 							<p className={`text-[10px] ${textMuted}`}>
 								Leave dates empty to add as unplanned item.
@@ -291,14 +388,27 @@ export function AddItemModal({
 						<div className="space-y-3">
 							<div>
 								<label className={labelClass}>Label</label>
-								<input type="text" value={phaseLabel} onChange={(e) => setPhaseLabel(e.target.value)} placeholder="e.g. Sprint 1, Design Phase, Code Freeze" className={inputClass} autoFocus />
+								<input
+									type="text"
+									value={phaseLabel}
+									onChange={(e) => setPhaseLabel(e.target.value)}
+									placeholder="e.g. Sprint 1, Design Phase, Code Freeze"
+									className={inputClass}
+									autoFocus
+								/>
 							</div>
 							<div>
 								<label className={labelClass}>Start Date</label>
-								<input type="date" value={phaseDate} onChange={(e) => setPhaseDate(e.target.value)} className={inputClass} />
+								<input
+									type="date"
+									value={phaseDate}
+									onChange={(e) => setPhaseDate(e.target.value)}
+									className={inputClass}
+								/>
 							</div>
 							<p className={`text-[10px] ${textMuted}`}>
-								Phases span from their start date to the next phase. Leave date empty to add as unplanned.
+								Phases span from their start date to the next phase. Leave date empty to add as
+								unplanned.
 							</p>
 						</div>
 					)}
@@ -308,11 +418,23 @@ export function AddItemModal({
 						<div className="space-y-3">
 							<div>
 								<label className={labelClass}>Label</label>
-								<input type="text" value={milestoneLabel} onChange={(e) => setMilestoneLabel(e.target.value)} placeholder="e.g. Beta Release" className={inputClass} autoFocus />
+								<input
+									type="text"
+									value={milestoneLabel}
+									onChange={(e) => setMilestoneLabel(e.target.value)}
+									placeholder="e.g. Beta Release"
+									className={inputClass}
+									autoFocus
+								/>
 							</div>
 							<div>
 								<label className={labelClass}>Date</label>
-								<input type="date" value={milestoneDate} onChange={(e) => setMilestoneDate(e.target.value)} className={inputClass} />
+								<input
+									type="date"
+									value={milestoneDate}
+									onChange={(e) => setMilestoneDate(e.target.value)}
+									className={inputClass}
+								/>
 							</div>
 							<p className={`text-[10px] ${textMuted}`}>
 								Leave date empty to add as unplanned milestone.
@@ -325,7 +447,14 @@ export function AddItemModal({
 						<div className="space-y-3">
 							<div>
 								<label className={labelClass}>Content</label>
-								<textarea value={announcementContent} onChange={(e) => setAnnouncementContent(e.target.value)} placeholder="e.g. Scheduled downtime for DB migration" rows={2} className={inputClass} autoFocus />
+								<textarea
+									value={announcementContent}
+									onChange={(e) => setAnnouncementContent(e.target.value)}
+									placeholder="e.g. Scheduled downtime for DB migration"
+									rows={2}
+									className={inputClass}
+									autoFocus
+								/>
 							</div>
 							<div>
 								<label className={labelClass}>Type</label>
@@ -348,7 +477,12 @@ export function AddItemModal({
 							</div>
 							<div>
 								<label className={labelClass}>Date</label>
-								<input type="date" value={announcementDate} onChange={(e) => setAnnouncementDate(e.target.value)} className={inputClass} />
+								<input
+									type="date"
+									value={announcementDate}
+									onChange={(e) => setAnnouncementDate(e.target.value)}
+									className={inputClass}
+								/>
 							</div>
 							<p className={`text-[10px] ${textMuted}`}>
 								Leave date empty to add as unplanned announcement.

@@ -1,4 +1,4 @@
-import type { Timeline, Section, TimelineTask, Milestone, Announcement } from "./types";
+import type { Announcement, Milestone, Section, Timeline, TimelineTask } from "./types";
 
 const STATUS_MAP: Record<string, string> = {
 	todo: "todo",

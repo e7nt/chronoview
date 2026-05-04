@@ -1,9 +1,9 @@
-import { useState } from "react";
+import type { ChartTask } from "@/lib/build-chart-timeline";
+import { STATUS_LABELS } from "@/lib/constants";
+import { daysBetween, formatDateFull, parseDate } from "@/lib/date-utils";
 import { motion } from "framer-motion";
 import { ExternalLink, X } from "lucide-react";
-import type { ChartTask } from "@/lib/build-chart-timeline";
-import { parseDate, daysBetween, formatDateFull } from "@/lib/date-utils";
-import { STATUS_LABELS } from "@/lib/constants";
+import { useState } from "react";
 
 const STATUSES = ["todo", "in-progress", "done", "blocked", "cancelled"] as const;
 
@@ -26,9 +26,7 @@ export function TaskDetail({ task, editMode = false, onClose, onTaskUpdate }: Ta
 	const drift = actualDays !== null ? actualDays - plannedDays : null;
 	const hasDrift = drift !== null && drift !== 0;
 	const datesMatch =
-		hasActual &&
-		task.actual_start === task.planned_start &&
-		task.actual_end === task.planned_end;
+		hasActual && task.actual_start === task.planned_start && task.actual_end === task.planned_end;
 
 	const canEdit = editMode && onTaskUpdate;
 
@@ -36,7 +34,8 @@ export function TaskDetail({ task, editMode = false, onClose, onTaskUpdate }: Ta
 		onTaskUpdate?.(task.id, changes);
 	};
 
-	const inputClass = "px-2 py-1 text-xs rounded border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 focus:outline-none focus:ring-1 focus:ring-blue-400";
+	const inputClass =
+		"px-2 py-1 text-xs rounded border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 focus:outline-none focus:ring-1 focus:ring-blue-400";
 	const labelClass = "text-stone-400 uppercase tracking-wider text-[10px]";
 
 	return (
@@ -57,7 +56,9 @@ export function TaskDetail({ task, editMode = false, onClose, onTaskUpdate }: Ta
 						className={`${inputClass} text-sm font-semibold flex-1 min-w-[200px]`}
 					/>
 				) : (
-					<h2 className="text-sm sm:text-base font-semibold text-stone-800 dark:text-stone-100">{task.name}</h2>
+					<h2 className="text-sm sm:text-base font-semibold text-stone-800 dark:text-stone-100">
+						{task.name}
+					</h2>
 				)}
 				{task.url && (
 					<a
@@ -155,7 +156,8 @@ export function TaskDetail({ task, editMode = false, onClose, onTaskUpdate }: Ta
 						<div>
 							<span className={labelClass}>Planned</span>
 							<p className="text-stone-700 font-medium mt-0.5">
-								{formatDateFull(parseDate(task.planned_start))} → {formatDateFull(parseDate(task.planned_end))}
+								{formatDateFull(parseDate(task.planned_start))} →{" "}
+								{formatDateFull(parseDate(task.planned_end))}
 								<span className="text-stone-400 font-normal ml-1.5">({plannedDays}d)</span>
 							</p>
 						</div>
@@ -164,7 +166,8 @@ export function TaskDetail({ task, editMode = false, onClose, onTaskUpdate }: Ta
 							<div>
 								<span className={labelClass}>Actual</span>
 								<p className="text-stone-700 font-medium mt-0.5">
-									{formatDateFull(parseDate(task.actual_start!))} → {formatDateFull(parseDate(task.actual_end!))}
+									{formatDateFull(parseDate(task.actual_start!))} →{" "}
+									{formatDateFull(parseDate(task.actual_end!))}
 									<span className="text-stone-400 font-normal ml-1.5">({actualDays}d)</span>
 								</p>
 							</div>
@@ -200,8 +203,8 @@ export function TaskDetail({ task, editMode = false, onClose, onTaskUpdate }: Ta
 										className="absolute h-full rounded"
 										style={{
 											backgroundColor: task.color || "#3B82F6",
-											left: `${((daysBetween(parseDate(task.planned_start), parseDate(task.actual_start!)) / Math.max(plannedDays, 1)) * 100)}%`,
-											width: `${((actualDays! / Math.max(plannedDays, 1)) * 100)}%`,
+											left: `${(daysBetween(parseDate(task.planned_start), parseDate(task.actual_start!)) / Math.max(plannedDays, 1)) * 100}%`,
+											width: `${(actualDays! / Math.max(plannedDays, 1)) * 100}%`,
 										}}
 									/>
 								</div>
@@ -228,13 +231,17 @@ export function TaskDetail({ task, editMode = false, onClose, onTaskUpdate }: Ta
 					<div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-3">
 						{task.blocked_reason && (
 							<div className="flex-1 p-2.5 rounded-lg bg-red-50 border border-red-100">
-								<p className="text-[10px] font-medium uppercase tracking-wider text-red-400 mb-0.5">Blocked by</p>
+								<p className="text-[10px] font-medium uppercase tracking-wider text-red-400 mb-0.5">
+									Blocked by
+								</p>
 								<p className="text-xs text-red-700">{task.blocked_reason}</p>
 							</div>
 						)}
 						{task.note && (
 							<div className="flex-1 p-2.5 rounded-lg bg-amber-50 border border-amber-100">
-								<p className="text-[10px] font-medium uppercase tracking-wider text-amber-500 mb-0.5">Note</p>
+								<p className="text-[10px] font-medium uppercase tracking-wider text-amber-500 mb-0.5">
+									Note
+								</p>
 								<p className="text-xs text-amber-800">{task.note}</p>
 							</div>
 						)}

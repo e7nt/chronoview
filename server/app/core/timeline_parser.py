@@ -91,13 +91,15 @@ def parse_timeline(text: str) -> dict[str, Any]:
             rest = clean[2:].strip()
             date_match = DATE_RE.search(rest)
             label = _extract_quoted(rest)
-            result["milestones"].append({
-                "id": mid,
-                "date": date_match.group(0) if date_match else None,
-                "label": label,
-                "kind": "phase",
-                "sort_order": milestone_order,
-            })
+            result["milestones"].append(
+                {
+                    "id": mid,
+                    "date": date_match.group(0) if date_match else None,
+                    "label": label,
+                    "kind": "phase",
+                    "sort_order": milestone_order,
+                }
+            )
             milestone_order += 1
             continue
 
@@ -107,13 +109,15 @@ def parse_timeline(text: str) -> dict[str, Any]:
             rest = clean[2:].strip()
             date_match = DATE_RE.search(rest)
             label = _extract_quoted(rest)
-            result["milestones"].append({
-                "id": mid,
-                "date": date_match.group(0) if date_match else None,
-                "label": label,
-                "kind": "milestone",
-                "sort_order": milestone_order,
-            })
+            result["milestones"].append(
+                {
+                    "id": mid,
+                    "date": date_match.group(0) if date_match else None,
+                    "label": label,
+                    "kind": "milestone",
+                    "sort_order": milestone_order,
+                }
+            )
             milestone_order += 1
             continue
 
@@ -129,12 +133,14 @@ def parse_timeline(text: str) -> dict[str, Any]:
                 t = type_match.group(1).lower()
                 if t in ("note", "downtime"):
                     ann_type = t
-            result["announcements"].append({
-                "id": aid,
-                "date": date_match.group(0) if date_match else None,
-                "content": content,
-                "type": ann_type,
-            })
+            result["announcements"].append(
+                {
+                    "id": aid,
+                    "date": date_match.group(0) if date_match else None,
+                    "content": content,
+                    "type": ann_type,
+                }
+            )
             continue
 
         # Task line

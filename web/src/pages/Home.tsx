@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Plus, ArrowRight, Clock, Layers, Diamond, LogOut, Upload } from "lucide-react";
-import { validateTimeline } from "@/lib/timeline-parser";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { validateTimeline } from "@/lib/timeline-parser";
 import type { Timeline, TimelineWithRole } from "@/lib/types";
+import { motion } from "framer-motion";
+import { ArrowRight, Clock, Diamond, Layers, LogOut, Plus, Upload } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const ACCENT_COLORS = [
 	["#6366F1", "#818CF8"], // indigo
@@ -30,9 +30,7 @@ function TimelineCard({
 	const [accent, accentLight] = getTimelineAccent(index);
 	const updated = new Date(timeline.updated_at);
 	const created = new Date(timeline.created_at);
-	const daysSinceUpdate = Math.floor(
-		(Date.now() - updated.getTime()) / (1000 * 60 * 60 * 24),
-	);
+	const daysSinceUpdate = Math.floor((Date.now() - updated.getTime()) / (1000 * 60 * 60 * 24));
 	const recency =
 		daysSinceUpdate === 0
 			? "Updated today"
@@ -73,9 +71,7 @@ function TimelineCard({
 							<h3 className="text-[15px] font-semibold text-stone-800 truncate group-hover:text-stone-950 transition-colors">
 								{timeline.title}
 							</h3>
-							<p className="text-[11px] text-stone-400 mt-1 font-mono">
-								{recency}
-							</p>
+							<p className="text-[11px] text-stone-400 mt-1 font-mono">{recency}</p>
 						</div>
 						<ArrowRight
 							size={16}
@@ -94,7 +90,8 @@ function TimelineCard({
 											className="rounded-full"
 											style={{
 												backgroundColor: task.color || accent,
-												opacity: task.status === "done" ? 0.7 : task.status === "blocked" ? 0.3 : 0.5,
+												opacity:
+													task.status === "done" ? 0.7 : task.status === "blocked" ? 0.3 : 0.5,
 												flex: `0 0 ${Math.max(8, Math.min(40, 100 / Math.max(section.tasks.length, 1)))}%`,
 											}}
 										/>
@@ -153,11 +150,22 @@ export function Home() {
 	});
 
 	useEffect(() => {
-		api.listTimelines()
+		api
+			.listTimelines()
 			.then(async (list) => {
 				setTimelineList(list);
 				const full = await Promise.all(
-					list.map((t) => api.getTimeline(t.id).catch(() => ({ ...t, sections: [], milestones: [], announcements: [] }) as unknown as Timeline)),
+					list.map((t) =>
+						api.getTimeline(t.id).catch(
+							() =>
+								({
+									...t,
+									sections: [],
+									milestones: [],
+									announcements: [],
+								}) as unknown as Timeline,
+						),
+					),
 				);
 				setTimelines(full);
 			})
@@ -214,8 +222,7 @@ export function Home() {
 			<div
 				className="fixed inset-0 pointer-events-none opacity-[0.03]"
 				style={{
-					backgroundImage:
-						"radial-gradient(circle at 1px 1px, #78716C 0.5px, transparent 0)",
+					backgroundImage: "radial-gradient(circle at 1px 1px, #78716C 0.5px, transparent 0)",
 					backgroundSize: "24px 24px",
 				}}
 			/>
@@ -238,16 +245,16 @@ export function Home() {
 										<rect x="5" y="21" width="14" height="4.5" rx="2" fill="#A855F7" />
 									</svg>
 								</div>
-								<h1 className="text-2xl font-bold text-stone-900 tracking-tight">
-									Chronoview
-								</h1>
+								<h1 className="text-2xl font-bold text-stone-900 tracking-tight">Chronoview</h1>
 							</div>
 							{user && (
 								<div className="flex items-center gap-3">
 									{user.avatar_url && (
 										<img src={user.avatar_url} alt="" className="w-7 h-7 rounded-full" />
 									)}
-									<span className="text-xs text-stone-500 hidden sm:block">{user.display_name || user.email}</span>
+									<span className="text-xs text-stone-500 hidden sm:block">
+										{user.display_name || user.email}
+									</span>
 									<button
 										type="button"
 										onClick={logout}
@@ -263,9 +270,7 @@ export function Home() {
 						<p className="text-stone-500 text-lg leading-relaxed max-w-lg">
 							Beautiful, shareable project timelines.
 							<br />
-							<span className="text-stone-400">
-								Plan, track, and narrate your project's story.
-							</span>
+							<span className="text-stone-400">Plan, track, and narrate your project's story.</span>
 						</p>
 					</motion.div>
 
@@ -283,9 +288,7 @@ export function Home() {
 					>
 						<div
 							className={`flex items-center gap-2 p-1.5 rounded-xl border transition-all duration-200 bg-white ${
-								inputFocused
-									? "border-stone-400 shadow-sm shadow-stone-200/50"
-									: "border-stone-200"
+								inputFocused ? "border-stone-400 shadow-sm shadow-stone-200/50" : "border-stone-200"
 							}`}
 						>
 							<div className="flex items-center justify-center w-9 h-9 rounded-lg bg-stone-100 shrink-0">
@@ -362,10 +365,7 @@ export function Home() {
 					{loading ? (
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 							{[0, 1, 2].map((i) => (
-								<div
-									key={i}
-									className="h-32 rounded-xl bg-stone-100/50 animate-pulse"
-								/>
+								<div key={i} className="h-32 rounded-xl bg-stone-100/50 animate-pulse" />
 							))}
 						</div>
 					) : timelines.length === 0 ? (
@@ -382,9 +382,7 @@ export function Home() {
 									<rect x="5" y="21" width="14" height="4.5" rx="2" fill="#78716C" />
 								</svg>
 							</div>
-							<p className="text-stone-400 text-sm">
-								No timelines yet.
-							</p>
+							<p className="text-stone-400 text-sm">No timelines yet.</p>
 							<p className="text-stone-400/70 text-xs mt-1">
 								Create your first one above to get started.
 							</p>
@@ -401,11 +399,7 @@ export function Home() {
 							</div>
 							<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 								{ownedTimelines.map((t, i) => (
-									<TimelineCard
-										key={t.id}
-										timeline={t}
-										index={i}
-									/>
+									<TimelineCard key={t.id} timeline={t} index={i} />
 								))}
 							</div>
 
@@ -426,11 +420,13 @@ export function Home() {
 												<div key={t.id} className="relative">
 													<TimelineCard timeline={t} index={i} />
 													{meta && (
-														<span className={`absolute top-3 right-3 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-															meta.role === "editor"
-																? "bg-emerald-100 text-emerald-700"
-																: "bg-stone-100 text-stone-500"
-														}`}>
+														<span
+															className={`absolute top-3 right-3 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+																meta.role === "editor"
+																	? "bg-emerald-100 text-emerald-700"
+																	: "bg-stone-100 text-stone-500"
+															}`}
+														>
 															{meta.role === "editor" ? "Editor" : "Viewer"}
 														</span>
 													)}

@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { X, Copy, Check, Link2, Lock, Globe, Mail } from "lucide-react";
 import { api } from "@/lib/api";
 import type { ShareLink } from "@/lib/types";
+import { motion } from "framer-motion";
+import { Check, Copy, Globe, Link2, Lock, Mail, X } from "lucide-react";
+import { useState } from "react";
 
 interface ShareDialogProps {
 	timelineId: string;
@@ -34,9 +34,7 @@ export function ShareDialog({ timelineId, onClose }: ShareDialogProps) {
 		}
 	};
 
-	const shareUrl = shareLink
-		? `${window.location.origin}/s/${shareLink.slug}`
-		: null;
+	const shareUrl = shareLink ? `${window.location.origin}/s/${shareLink.slug}` : null;
 
 	const fullShareText = shareUrl
 		? isPublic
@@ -64,9 +62,15 @@ export function ShareDialog({ timelineId, onClose }: ShareDialogProps) {
 				<div className="flex items-center justify-between px-5 py-4 border-b border-stone-100 dark:border-stone-800">
 					<div className="flex items-center gap-2.5">
 						<Link2 size={16} className="text-stone-500" />
-						<h2 className="text-sm font-semibold text-stone-800 dark:text-stone-200">Share Timeline</h2>
+						<h2 className="text-sm font-semibold text-stone-800 dark:text-stone-200">
+							Share Timeline
+						</h2>
 					</div>
-					<button type="button" onClick={onClose} className="p-1 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-400 transition-colors">
+					<button
+						type="button"
+						onClick={onClose}
+						className="p-1 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-400 transition-colors"
+					>
 						<X size={14} />
 					</button>
 				</div>
@@ -145,9 +149,7 @@ export function ShareDialog({ timelineId, onClose }: ShareDialogProps) {
 								</motion.div>
 							)}
 
-							{error && (
-								<p className="text-xs text-red-600">{error}</p>
-							)}
+							{error && <p className="text-xs text-red-600">{error}</p>}
 
 							<button
 								type="button"
@@ -165,7 +167,9 @@ export function ShareDialog({ timelineId, onClose }: ShareDialogProps) {
 								<div className="w-10 h-10 mx-auto mb-3 rounded-full bg-green-50 flex items-center justify-center">
 									<Check size={18} className="text-green-600" />
 								</div>
-								<p className="text-sm font-medium text-stone-800 dark:text-stone-200">Link created</p>
+								<p className="text-sm font-medium text-stone-800 dark:text-stone-200">
+									Link created
+								</p>
 							</div>
 
 							<div className="p-3 rounded-lg bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
@@ -190,11 +194,15 @@ export function ShareDialog({ timelineId, onClose }: ShareDialogProps) {
 								{!isPublic && (
 									<div className="mt-2 pt-2 border-t border-stone-200 dark:border-stone-700">
 										<p className="text-[10px] text-stone-400">
-											Passcode: <span className="font-mono text-stone-600 dark:text-stone-300">{passcode}</span>
+											Passcode:{" "}
+											<span className="font-mono text-stone-600 dark:text-stone-300">
+												{passcode}
+											</span>
 										</p>
 										{contactEmail && (
 											<p className="text-[10px] text-stone-400 mt-0.5">
-												Contact: <span className="text-stone-600 dark:text-stone-300">{contactEmail}</span>
+												Contact:{" "}
+												<span className="text-stone-600 dark:text-stone-300">{contactEmail}</span>
 											</p>
 										)}
 									</div>
@@ -203,7 +211,11 @@ export function ShareDialog({ timelineId, onClose }: ShareDialogProps) {
 
 							<button
 								type="button"
-								onClick={() => { setShareLink(null); setPasscode(""); setContactEmail(""); }}
+								onClick={() => {
+									setShareLink(null);
+									setPasscode("");
+									setContactEmail("");
+								}}
 								className="w-full py-2 rounded-lg border border-stone-200 dark:border-stone-700 text-xs font-medium text-stone-500 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors"
 							>
 								Create another link

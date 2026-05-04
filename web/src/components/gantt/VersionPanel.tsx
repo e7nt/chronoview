@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { X, Download, RotateCcw, Clock } from "lucide-react";
 import { api } from "@/lib/api";
 import type { TimelineVersion } from "@/lib/types";
+import { motion } from "framer-motion";
+import { Clock, Download, RotateCcw, X } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
 interface VersionPanelProps {
 	timelineId: string;
@@ -74,7 +74,13 @@ export function VersionPanel({ timelineId, dark, onClose, onRestore }: VersionPa
 
 	const formatDate = (iso: string) => {
 		const d = new Date(iso);
-		return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" });
+		return d.toLocaleDateString("en-US", {
+			month: "short",
+			day: "numeric",
+			year: "numeric",
+			hour: "2-digit",
+			minute: "2-digit",
+		});
 	};
 
 	const bg = dark ? "bg-stone-900 border-stone-700" : "bg-white border-stone-200";
@@ -90,10 +96,16 @@ export function VersionPanel({ timelineId, dark, onClose, onRestore }: VersionPa
 			className={`fixed right-0 top-0 bottom-0 w-[400px] max-w-[90vw] z-50 ${bg} border-l shadow-2xl flex flex-col`}
 		>
 			{/* Header */}
-			<div className={`flex items-center gap-2 px-4 py-3 border-b ${dark ? "border-stone-700" : "border-stone-200"}`}>
+			<div
+				className={`flex items-center gap-2 px-4 py-3 border-b ${dark ? "border-stone-700" : "border-stone-200"}`}
+			>
 				<Clock size={14} className={textMuted} />
 				<h2 className={`text-sm font-semibold ${text} mr-auto`}>Version History</h2>
-				<button type="button" onClick={onClose} className={`p-1 rounded-md hover:bg-stone-100 ${textMuted}`}>
+				<button
+					type="button"
+					onClick={onClose}
+					className={`p-1 rounded-md hover:bg-stone-100 ${textMuted}`}
+				>
 					<X size={14} />
 				</button>
 			</div>
@@ -108,7 +120,9 @@ export function VersionPanel({ timelineId, dark, onClose, onRestore }: VersionPa
 					<div className="p-8 text-center">
 						<Clock size={24} className={`mx-auto mb-3 ${textMuted} opacity-30`} />
 						<p className={`text-xs ${textMuted}`}>No versions yet.</p>
-						<p className={`text-[10px] ${textMuted} mt-1`}>Versions are created automatically when you save.</p>
+						<p className={`text-[10px] ${textMuted} mt-1`}>
+							Versions are created automatically when you save.
+						</p>
 					</div>
 				) : (
 					<div className="divide-y divide-stone-100 dark:divide-stone-800">
@@ -116,7 +130,9 @@ export function VersionPanel({ timelineId, dark, onClose, onRestore }: VersionPa
 							<div key={v.id} className="px-4 py-3">
 								<div className="flex items-center gap-2 mb-1">
 									<span className={`text-xs font-medium ${text}`}>{v.label || "Auto-save"}</span>
-									<span className={`text-[10px] ${textMuted} ml-auto`}>{formatDate(v.created_at)}</span>
+									<span className={`text-[10px] ${textMuted} ml-auto`}>
+										{formatDate(v.created_at)}
+									</span>
 								</div>
 
 								<div className="flex items-center gap-1.5 mt-2">
@@ -153,9 +169,11 @@ export function VersionPanel({ timelineId, dark, onClose, onRestore }: VersionPa
 
 								{/* Preview content */}
 								{previewId === v.id && previewContent && (
-									<pre className={`mt-2 p-3 rounded-lg text-[11px] leading-5 font-mono overflow-x-auto max-h-[300px] overflow-y-auto ${
-										dark ? "bg-stone-800 text-stone-300" : "bg-stone-50 text-stone-600"
-									}`}>
+									<pre
+										className={`mt-2 p-3 rounded-lg text-[11px] leading-5 font-mono overflow-x-auto max-h-[300px] overflow-y-auto ${
+											dark ? "bg-stone-800 text-stone-300" : "bg-stone-50 text-stone-600"
+										}`}
+									>
 										{previewContent}
 									</pre>
 								)}

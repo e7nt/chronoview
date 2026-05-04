@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.auth import router as auth_router
-from app.api.timelines import router as timelines_router
 from app.api.share import router as share_router
+from app.api.timelines import router as timelines_router
 from app.config import settings
 
 app = FastAPI(title="Chronoview", version="0.1.0")

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { validateTimeline } from "../timeline-parser";
 import { serializeTimeline } from "../timeline-serializer";
 
@@ -130,28 +130,32 @@ title: All Statuses
 			color_scheme: "default",
 			created_at: "2026-01-01T00:00:00Z",
 			updated_at: "2026-01-01T00:00:00Z",
-			sections: [{
-				id: "sec-1",
-				timeline_id: "tl-1",
-				name: "Team",
-				sort_order: 0,
-				tasks: [{
-					id: "t-1",
-					section_id: "sec-1",
-					name: "Task",
-					status: "todo",
-					color: null,
-					planned_start: "2026-01-01",
-					planned_end: "2026-01-15",
-					actual_start: null,
-					actual_end: null,
-					blocked_reason: null,
-					note: null,
-					url: null,
+			sections: [
+				{
+					id: "sec-1",
+					timeline_id: "tl-1",
+					name: "Team",
 					sort_order: 0,
-					depends_on: [],
-				}],
-			}],
+					tasks: [
+						{
+							id: "t-1",
+							section_id: "sec-1",
+							name: "Task",
+							status: "todo",
+							color: null,
+							planned_start: "2026-01-01",
+							planned_end: "2026-01-15",
+							actual_start: null,
+							actual_end: null,
+							blocked_reason: null,
+							note: null,
+							url: null,
+							sort_order: 0,
+							depends_on: [],
+						},
+					],
+				},
+			],
 			milestones: [],
 			announcements: [],
 		};

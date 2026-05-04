@@ -1,15 +1,7 @@
-import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, FileText, Keyboard, Layers, Link2, Moon, Navigation } from "lucide-react";
 import { useRef } from "react";
-import {
-	ArrowRight,
-	Layers,
-	FileText,
-	Navigation,
-	Keyboard,
-	Moon,
-	Link2,
-} from "lucide-react";
+import { Link } from "react-router-dom";
 
 const TIMELINE_DEMO = `---
 title: Project Phoenix
@@ -106,30 +98,81 @@ function FormatDemo() {
 				const trimmed = line.trim();
 
 				if (trimmed === "---")
-					return <div key={i} className="text-stone-400">{line}</div>;
+					return (
+						<div key={i} className="text-stone-400">
+							{line}
+						</div>
+					);
 				if (trimmed.startsWith("title:"))
-					return <div key={i}><span className="text-stone-500">title:</span><span className="text-stone-700"> {trimmed.slice(6).trim()}</span></div>;
+					return (
+						<div key={i}>
+							<span className="text-stone-500">title:</span>
+							<span className="text-stone-700"> {trimmed.slice(6).trim()}</span>
+						</div>
+					);
 				if (trimmed.startsWith("@ "))
-					return <div key={i}><span className="text-purple-600">@</span><span className="text-cyan-700"> {trimmed.slice(2, 12)}</span><span className="text-amber-700"> {trimmed.slice(12)}</span></div>;
+					return (
+						<div key={i}>
+							<span className="text-purple-600">@</span>
+							<span className="text-cyan-700"> {trimmed.slice(2, 12)}</span>
+							<span className="text-amber-700"> {trimmed.slice(12)}</span>
+						</div>
+					);
 				if (trimmed.startsWith("! "))
-					return <div key={i}><span className="text-amber-600">!</span><span className="text-cyan-700"> {trimmed.slice(2, 12)}</span><span className="text-amber-700"> {trimmed.slice(12)}</span></div>;
+					return (
+						<div key={i}>
+							<span className="text-amber-600">!</span>
+							<span className="text-cyan-700"> {trimmed.slice(2, 12)}</span>
+							<span className="text-amber-700"> {trimmed.slice(12)}</span>
+						</div>
+					);
 				if (trimmed.startsWith("## "))
-					return <div key={i} className="text-blue-600 font-semibold mt-1">{line}</div>;
+					return (
+						<div key={i} className="text-blue-600 font-semibold mt-1">
+							{line}
+						</div>
+					);
 				if (trimmed.startsWith("- [")) {
 					const statusMatch = trimmed.match(/\[(\S+)\]/);
 					const statusColor =
-						statusMatch?.[1] === "done" ? "text-green-600" :
-						statusMatch?.[1] === "in-progress" ? "text-blue-500" :
-						statusMatch?.[1] === "blocked" ? "text-red-500" :
-						"text-stone-500";
-					return <div key={i}><span className="text-stone-400">- </span><span className={statusColor}>[{statusMatch?.[1]}]</span><span className="text-stone-700"> {trimmed.slice((statusMatch?.index ?? 0) + (statusMatch?.[0]?.length ?? 0))}</span></div>;
+						statusMatch?.[1] === "done"
+							? "text-green-600"
+							: statusMatch?.[1] === "in-progress"
+								? "text-blue-500"
+								: statusMatch?.[1] === "blocked"
+									? "text-red-500"
+									: "text-stone-500";
+					return (
+						<div key={i}>
+							<span className="text-stone-400">- </span>
+							<span className={statusColor}>[{statusMatch?.[1]}]</span>
+							<span className="text-stone-700">
+								{" "}
+								{trimmed.slice((statusMatch?.index ?? 0) + (statusMatch?.[0]?.length ?? 0))}
+							</span>
+						</div>
+					);
 				}
-				if (trimmed.startsWith("actual:") || trimmed.startsWith("note:") || trimmed.startsWith("depends:") || trimmed.startsWith("blocked-by:")) {
+				if (
+					trimmed.startsWith("actual:") ||
+					trimmed.startsWith("note:") ||
+					trimmed.startsWith("depends:") ||
+					trimmed.startsWith("blocked-by:")
+				) {
 					const [key, ...rest] = trimmed.split(":");
-					return <div key={i} className="pl-4"><span className="text-stone-400">{key}:</span><span className="text-stone-600">{rest.join(":")}</span></div>;
+					return (
+						<div key={i} className="pl-4">
+							<span className="text-stone-400">{key}:</span>
+							<span className="text-stone-600">{rest.join(":")}</span>
+						</div>
+					);
 				}
 				if (trimmed === "") return <div key={i}>&nbsp;</div>;
-				return <div key={i} className="text-stone-600">{line}</div>;
+				return (
+					<div key={i} className="text-stone-600">
+						{line}
+					</div>
+				);
 			})}
 		</div>
 	);
@@ -190,8 +233,19 @@ export function Landing() {
 						The beautiful way to{" "}
 						<span className="relative inline-block">
 							share
-							<svg className="absolute -bottom-1 left-0 w-full h-3" viewBox="0 0 200 12" preserveAspectRatio="none">
-								<path d="M0 8 Q50 0 100 6 T200 4" stroke="#6366F1" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.4" />
+							<svg
+								className="absolute -bottom-1 left-0 w-full h-3"
+								viewBox="0 0 200 12"
+								preserveAspectRatio="none"
+							>
+								<path
+									d="M0 8 Q50 0 100 6 T200 4"
+									stroke="#6366F1"
+									strokeWidth="3"
+									fill="none"
+									strokeLinecap="round"
+									opacity="0.4"
+								/>
 							</svg>
 						</span>{" "}
 						project timelines
@@ -199,8 +253,8 @@ export function Landing() {
 
 					<p className="mt-6 text-lg text-stone-500 max-w-xl leading-relaxed">
 						Plan, track, and narrate your project's story with a{" "}
-						<span className="text-stone-700 font-medium">plain-text format</span>{" "}
-						that renders into a gorgeous, shareable Gantt chart.
+						<span className="text-stone-700 font-medium">plain-text format</span> that renders into
+						a gorgeous, shareable Gantt chart.
 					</p>
 
 					<div className="mt-10 flex items-center gap-4">
@@ -307,10 +361,13 @@ export function Landing() {
 							Plain text that renders beautifully
 						</h2>
 						<p className="text-stone-500 text-sm leading-relaxed mb-6">
-							The <code className="font-mono text-xs bg-stone-100 px-1.5 py-0.5 rounded text-stone-700">.timeline</code> format
-							is human-readable, git-friendly, and copy-pasteable.
-							Write it in any text editor. Version control it with your code.
-							The app renders it into a beautiful, interactive Gantt chart.
+							The{" "}
+							<code className="font-mono text-xs bg-stone-100 px-1.5 py-0.5 rounded text-stone-700">
+								.timeline
+							</code>{" "}
+							format is human-readable, git-friendly, and copy-pasteable. Write it in any text
+							editor. Version control it with your code. The app renders it into a beautiful,
+							interactive Gantt chart.
 						</p>
 						<div className="space-y-3 text-[12px] text-stone-500">
 							<div className="flex items-center gap-2">
@@ -383,11 +440,12 @@ export function Landing() {
 				<div className="max-w-5xl mx-auto px-6 py-8 flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<Logo size={20} />
-						<span className="text-xs text-stone-400">
-							Built with care.
-						</span>
+						<span className="text-xs text-stone-400">Built with care.</span>
 					</div>
-					<Link to="/t/new" className="text-xs text-stone-400 hover:text-stone-600 transition-colors">
+					<Link
+						to="/t/new"
+						className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
+					>
 						Try it free &rarr;
 					</Link>
 				</div>

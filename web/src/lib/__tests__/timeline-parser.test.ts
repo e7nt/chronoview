@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { parseTimeline } from "../timeline-parser";
 import { serializeTimeline } from "../timeline-serializer";
 import type { Timeline } from "../types";
@@ -180,30 +180,41 @@ completely invalid line here
 			color_scheme: "default",
 			created_at: "2026-01-01T00:00:00Z",
 			updated_at: "2026-01-01T00:00:00Z",
-			sections: [{
-				id: "sec-1",
-				timeline_id: "tl-1",
-				name: "Team A",
-				sort_order: 0,
-				tasks: [{
-					id: "t-1",
-					section_id: "sec-1",
-					name: "Build API",
-					status: "todo",
-					color: "#3B82F6",
-					planned_start: "2026-01-01",
-					planned_end: "2026-01-15",
-					actual_start: null,
-					actual_end: null,
-					blocked_reason: null,
-					note: "First task",
-					url: "https://jira.example.com/T-1",
+			sections: [
+				{
+					id: "sec-1",
+					timeline_id: "tl-1",
+					name: "Team A",
 					sort_order: 0,
-					depends_on: [],
-				}],
-			}],
+					tasks: [
+						{
+							id: "t-1",
+							section_id: "sec-1",
+							name: "Build API",
+							status: "todo",
+							color: "#3B82F6",
+							planned_start: "2026-01-01",
+							planned_end: "2026-01-15",
+							actual_start: null,
+							actual_end: null,
+							blocked_reason: null,
+							note: "First task",
+							url: "https://jira.example.com/T-1",
+							sort_order: 0,
+							depends_on: [],
+						},
+					],
+				},
+			],
 			milestones: [
-				{ id: "m-1", timeline_id: "tl-1", date: "2026-02-01", label: "Launch", kind: "milestone", sort_order: 0 },
+				{
+					id: "m-1",
+					timeline_id: "tl-1",
+					date: "2026-02-01",
+					label: "Launch",
+					kind: "milestone",
+					sort_order: 0,
+				},
 			],
 			announcements: [],
 		};
@@ -231,28 +242,32 @@ completely invalid line here
 			color_scheme: "default",
 			created_at: "2026-01-01T00:00:00Z",
 			updated_at: "2026-01-01T00:00:00Z",
-			sections: [{
-				id: "550e8400-e29b-41d4-a716-446655440000",
-				timeline_id: "tl-1",
-				name: "Section",
-				sort_order: 0,
-				tasks: [{
-					id: "660e8400-e29b-41d4-a716-446655440000",
-					section_id: "550e8400-e29b-41d4-a716-446655440000",
-					name: "Task",
-					status: "todo",
-					color: null,
-					planned_start: "2026-01-01",
-					planned_end: "2026-01-15",
-					actual_start: null,
-					actual_end: null,
-					blocked_reason: null,
-					note: null,
-					url: null,
+			sections: [
+				{
+					id: "550e8400-e29b-41d4-a716-446655440000",
+					timeline_id: "tl-1",
+					name: "Section",
 					sort_order: 0,
-					depends_on: [],
-				}],
-			}],
+					tasks: [
+						{
+							id: "660e8400-e29b-41d4-a716-446655440000",
+							section_id: "550e8400-e29b-41d4-a716-446655440000",
+							name: "Task",
+							status: "todo",
+							color: null,
+							planned_start: "2026-01-01",
+							planned_end: "2026-01-15",
+							actual_start: null,
+							actual_end: null,
+							blocked_reason: null,
+							note: null,
+							url: null,
+							sort_order: 0,
+							depends_on: [],
+						},
+					],
+				},
+			],
 			milestones: [],
 			announcements: [],
 		};

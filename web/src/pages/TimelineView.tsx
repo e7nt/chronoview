@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { api } from "@/lib/api";
-import type { Timeline } from "@/lib/types";
 import { GanttChart } from "@/components/gantt/GanttChart";
 import { TimelineSource } from "@/components/timeline/TimelineSource";
+import { api } from "@/lib/api";
+import { type ChartTimeline, buildChartTimeline } from "@/lib/build-chart-timeline";
 import { parseTimeline } from "@/lib/timeline-parser";
 import { serializeTimeline } from "@/lib/timeline-serializer";
-import { buildChartTimeline, type ChartTimeline } from "@/lib/build-chart-timeline";
+import type { Timeline } from "@/lib/types";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 type ViewMode = "chart" | "split" | "source";
 
@@ -35,7 +35,8 @@ export function TimelineView() {
 	// Fetch timeline
 	useEffect(() => {
 		if (!id) return;
-		api.getTimeline(id)
+		api
+			.getTimeline(id)
 			.then((data) => {
 				setTimeline(data);
 				setSourceText(data.content);
@@ -113,11 +114,14 @@ export function TimelineView() {
 	// Refresh (after AddItemModal etc)
 	const refreshTimeline = useCallback(() => {
 		if (!id) return;
-		api.getTimeline(id).then((data) => {
-			setTimeline(data);
-			setSourceText(data.content);
-			setSavedText(data.content);
-		}).catch(() => {});
+		api
+			.getTimeline(id)
+			.then((data) => {
+				setTimeline(data);
+				setSourceText(data.content);
+				setSavedText(data.content);
+			})
+			.catch(() => {});
 	}, [id]);
 
 	// Cmd+S to save
@@ -197,10 +201,14 @@ export function TimelineView() {
 
 				{/* Source panel */}
 				{showSource && (
-					<div className={`overflow-hidden flex flex-col ${showChart ? "hidden md:flex w-[480px] shrink-0 border-l border-border-subtle" : "w-full"}`}>
+					<div
+						className={`overflow-hidden flex flex-col ${showChart ? "hidden md:flex w-[480px] shrink-0 border-l border-border-subtle" : "w-full"}`}
+					>
 						{!showChart && (
 							<div className="flex items-center gap-3 px-4 py-2 border-b border-border-subtle bg-white">
-								<h1 className="text-sm font-semibold text-stone-800 mr-auto truncate">{timeline.title}</h1>
+								<h1 className="text-sm font-semibold text-stone-800 mr-auto truncate">
+									{timeline.title}
+								</h1>
 								<div className="flex items-center gap-0.5 p-0.5 rounded-md bg-stone-100">
 									{(["chart", "source"] as ViewMode[]).map((mode) => (
 										<button
@@ -208,7 +216,9 @@ export function TimelineView() {
 											type="button"
 											onClick={() => setViewMode(mode)}
 											className={`px-2.5 py-1 text-[10px] font-medium rounded transition-colors capitalize ${
-												viewMode === mode ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"
+												viewMode === mode
+													? "bg-white text-stone-800 shadow-sm"
+													: "text-stone-500 hover:text-stone-700"
 											}`}
 										>
 											{mode}

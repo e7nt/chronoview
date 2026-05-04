@@ -1,7 +1,7 @@
 import uuid
 from datetime import date, datetime
 
-from sqlalchemy import Date, DateTime, ForeignKey, Integer, String, Text, Boolean, func
+from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Integer, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -17,16 +17,22 @@ class User(UUIDMixin, Base):
     avatar_url: Mapped[str | None] = mapped_column(String, nullable=True)
     auth_provider: Mapped[str] = mapped_column(String, nullable=False, server_default="local")
     google_id: Mapped[str | None] = mapped_column(String, unique=True, nullable=True)
-    firebase_uid: Mapped[str | None] = mapped_column(String, unique=True, nullable=True)  # legacy, to be removed
+    firebase_uid: Mapped[str | None] = mapped_column(
+        String, unique=True, nullable=True
+    )  # legacy, to be removed
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
-    timelines: Mapped[list["Timeline"]] = relationship(back_populates="owner", cascade="all, delete-orphan")
+    timelines: Mapped[list["Timeline"]] = relationship(
+        back_populates="owner", cascade="all, delete-orphan"
+    )
 
 
 class Timeline(UUIDMixin, Base):
     __tablename__ = "timelines"
 
-    owner_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    owner_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id"), nullable=False
+    )
     title: Mapped[str] = mapped_column(String, nullable=False)
     content: Mapped[str | None] = mapped_column(Text, nullable=True)
     color_scheme: Mapped[str] = mapped_column(String, default="default")
