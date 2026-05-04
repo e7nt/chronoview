@@ -173,17 +173,33 @@ A short walkthrough lives in [`README.md`](./README.md), and `examples/` contain
 
 ## Configuration
 
-All configuration is environment-based. `.env.example` is the source of truth; `.env` is git-ignored.
+All configuration is environment-based.
 
-| Variable | Purpose |
-| --- | --- |
-| `DATABASE_URL` / `DATABASE_URL_SYNC` | Postgres connection (async + sync) |
-| `CORS_ORIGINS` | Comma-separated allowed origins |
-| `SECRET_KEY` | JWT signing key (override the dev default in production) |
-| `ACCESS_TOKEN_EXPIRE_MINUTES` | Token lifetime |
-| `GOOGLE_CLIENT_ID` | For Google ID-token verification |
-| `DEV_MODE` | Allow unauthenticated requests to fall back to the dev user (local only) |
-| `VITE_API_URL` | Frontend → backend base URL |
+- **Local dev:** `server/.env.example` and `web/.env.example` are templates — copy each to `.env` (git-ignored) in the same directory. Values use literal local-dev defaults (`db:5432`, `localhost:5173`, etc.).
+- **Production:** `server/.env.production.example` and `web/.env.production.example` are paste-ready blocks for Railway's Raw Editor. Their values use Railway's `${{Service.VAR}}` reference syntax, which only resolves inside Railway.
+
+| Variable | Service | Purpose |
+| --- | --- | --- |
+| `DATABASE_URL` / `DATABASE_URL_SYNC` | server | Postgres connection (async + sync). Both are required: FastAPI uses async, Alembic uses sync. |
+| `CORS_ORIGINS` | server | Comma-separated allowed frontend origins |
+| `SECRET_KEY` | server | JWT signing key. **Override the dev default in production** (`openssl rand -hex 32`). |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | server | Token lifetime in minutes |
+| `GOOGLE_CLIENT_ID` | server | Google ID-token verification (must match `VITE_GOOGLE_CLIENT_ID`) |
+| `DEV_MODE` | server | When `true`, unauthenticated requests fall back to a seeded dev user. **Must be `false` in any deployment.** |
+| `VITE_API_URL` | web | Frontend → backend base URL (read at container startup via `entrypoint.sh`) |
+| `VITE_GOOGLE_CLIENT_ID` | web | Google sign-in client id (same value as `GOOGLE_CLIENT_ID`) |
+
+## Deploying on Railway
+
+The repo is set up to deploy as **three Railway services** in a single project: a managed Postgres, a `server` service built from `server/Dockerfile`, and a `web` service built from `web/Dockerfile`.
+
+### Notes from the first deploy (worth knowing)
+
+- **Service names matter for variable references.** Cross-service refs like `${{web.RAILWAY_PUBLIC_DOMAIN}}` are case-sensitive and must match the actual service name in the Railway dashboard. If you rename a service from `server` to `backend`, every reference using `${{server.…}}` silently resolves to empty. Inspect with `railway variables --service <name>` (no `--json`) — the table view shows the *resolved* values.
+- **Alembic reads `DATABASE_URL_SYNC` from env**, not `alembic.ini`. The hardcoded URL in `alembic.ini` is only used for local dev where the env var isn't set. Don't be tempted to "fix" `alembic.ini` to point at a real DB — leave it as the local-dev fallback.
+- **Web service exposes port 8080** (Caddy). When generating a Railway domain, pick `8080`, not `2019` (Caddy's admin port).
+- **Migrations apply on startup.** `server/Dockerfile` runs `alembic upgrade head && uvicorn …` as its CMD, so each deploy migrates before the API comes up.
+- **Healthcheck path is `/api/health`**, configured in `server/railway.toml`. If the migration step crashes, the healthcheck fails and Railway retries — check both build logs (`railway logs --service <name> --build`) and runtime logs (`railway logs --service <name>`).
 
 ## Roadmap (non-binding)
 
