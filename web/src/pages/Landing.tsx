@@ -1,5 +1,14 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, FileText, Github, Keyboard, Layers, Link2, Moon, Navigation } from "lucide-react";
+import {
+	ArrowRight,
+	FileText,
+	Github,
+	Keyboard,
+	Layers,
+	Link2,
+	Moon,
+	Navigation,
+} from "lucide-react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 

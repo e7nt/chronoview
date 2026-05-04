@@ -18,9 +18,10 @@ jobs:
         with:
           python-version: "3.12"
       - uses: astral-sh/setup-uv@v3
-      - run: uv sync --frozen || uv sync
-      - run: uv run ruff check app/
-      - run: uv run ruff format --check app/
+      # ruff isn't a project dep — run it as a one-off tool so we don't
+      # drag a dev-dependency group into the runtime image.
+      - run: uvx ruff check app/
+      - run: uvx ruff format --check app/
 
   lint-web:
     name: Lint and test web (biome + vitest)
