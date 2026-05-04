@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, FileText, Keyboard, Layers, Link2, Moon, Navigation } from "lucide-react";
+import { ArrowRight, FileText, Github, Keyboard, Layers, Link2, Moon, Navigation } from "lucide-react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 
@@ -442,12 +442,24 @@ export function Landing() {
 						<Logo size={20} />
 						<span className="text-xs text-stone-400">Built with care.</span>
 					</div>
-					<Link
-						to="/t/new"
-						className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
-					>
-						Try it free &rarr;
-					</Link>
+					<div className="flex items-center gap-5">
+						<a
+							href="https://github.com/e7nt/chronoview"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="flex items-center gap-1.5 text-xs text-stone-400 hover:text-stone-600 transition-colors"
+							aria-label="View Chronoview on GitHub"
+						>
+							<Github size={14} />
+							<span>GitHub</span>
+						</a>
+						<Link
+							to="/t/new"
+							className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
+						>
+							Try it free &rarr;
+						</Link>
+					</div>
 				</div>
 			</footer>
 		</div>
